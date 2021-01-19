@@ -2,29 +2,11 @@
 > Builds a Docker image from base Kong + nokia/kong-oidc (based on zmartzone/lua-resty-openidc)
 
 
-## Releases
-- Kong v2.1.4: [Dockerfile](https://github.com/Revomatico/docker-kong-oidc/blob/master/Dockerfile)
-- Kong v2.1.0: [Dockerfile](https://github.com/Revomatico/docker-kong-oidc/blob/2.1.0-1/Dockerfile)
-- Kong v2.0.5: [Dockerfile](https://github.com/Revomatico/docker-kong-oidc/blob/2.0.5-4/Dockerfile)
-- Kong v2.0.4: [Dockerfile](https://github.com/Revomatico/docker-kong-oidc/blob/2.0.4-1/Dockerfile)
-- Kong v2.0.3: [Dockerfile](https://github.com/Revomatico/docker-kong-oidc/blob/2.0.3-1/Dockerfile)
-- Kong v2.0.2: [Dockerfile](https://github.com/Revomatico/docker-kong-oidc/blob/2.0.2-1/Dockerfile)
-- Kong v1.5.0: [Dockerfile](https://github.com/Revomatico/docker-kong-oidc/blob/1.5.0-1/Dockerfile)
-- Kong v1.4.2: [Dockerfile](https://github.com/Revomatico/docker-kong-oidc/blob/1.4.2-1/Dockerfile)
-- Kong v1.4.1: [Dockerfile](https://github.com/Revomatico/docker-kong-oidc/blob/1.4.1-1/Dockerfile)
-- Kong v1.4.0: [Dockerfile](https://github.com/Revomatico/docker-kong-oidc/blob/1.4.0-1/Dockerfile)
-- Kong v1.3.0: [Dockerfile](https://github.com/Revomatico/docker-kong-oidc/blob/1.3.0-2/Dockerfile)
-- Kong v1.2.2: [Dockerfile](https://github.com/Revomatico/docker-kong-oidc/blob/1.2.2-1/Dockerfile)
-- Kong v1.1.2: [Dockerfile](https://github.com/Revomatico/docker-kong-oidc/blob/1.1.2-1/Dockerfile)
-- Kong v1.0.3: [Dockerfile](https://github.com/Revomatico/docker-kong-oidc/blob/1.0.3-1/Dockerfile)
-- Kong v0.14: [Dockerfile](https://github.com/Revomatico/docker-kong-oidc/blob/0.14-2/Dockerfile)
-- Kong v0.13: [Dockerfile](https://github.com/Revomatico/docker-kong-oidc/blob/0.13-3/Dockerfile)
-- Kong v0.12:  [Dockerfile](https://github.com/Revomatico/docker-kong-oidc/blob/0.12/Dockerfile)
-
 ## Session: Cookie
 - This is the default, but not recommended. I would recommend **shm** for a single instance, lightweight deployment.
 - If you have too much information in the session (claims, etc), you may need to [increase the nginx header size](https://github.com/bungle/lua-resty-session#cookie-storage-adapter):
     - `KONG_NGINX_LARGE_CLIENT_HEADER_BUFFERS='4 16k'`
+
 
 ## Session: Memcached
 
@@ -48,6 +30,7 @@
 - KONG_X_SESSION_MEMCACHE_SEND_TIMEOUT, default 1000 (milliseconds)
 - KONG_X_SESSION_MEMCACHE_READ_TIMEOUT, default 1000 (milliseconds)
 
+
 ## Session: DSHM (Hazelcast + Vertex)
 
 > This lua-resty-session implementation depends on [grrolland/ngx-distributed-shm](https://github.com/grrolland/ngx-distributed-shm) dshm.lua library.
@@ -67,6 +50,7 @@
 - X_SESSION_DSHM_POOL_SIZE, default: 10
 - X_SESSION_DSMM_POOL_BACKLOG, default: 10
 
+
 ## Session: SHM
 
 > Good for single instance. No additional software is required.
@@ -83,12 +67,8 @@
 - KONG_X_SESSION_SHM_LOCK_RATIO, default: 2
 - KONG_X_SESSION_SHM_LOCK_MAX_STEP, default: 0.5
 
-## Proxy cache plugin storage
-- Reference: https://docs.konghq.com/hub/kong-inc/proxy-cache/
-- KONG_X_PROXY_CACHE_STORAGE_NAME, default: kong_cache
-- KONG_X_PROXY_CACHE_STORAGE_SIZE, default: 5m (set only if KONG_X_CACHE_PLUGIN_STORAGE_NAME is not kong_cache)
 
-# Notes
+## Notes
 - Dockerfile will patch `nginx_kong.lua` template at build time, to include `set_decode_base64 $session_secret 'some_base64_string';`
     - This is needed for the kong-oidc plugin to set a session secret that will later override the template string
     - See: https://github.com/nokia/kong-oidc/issues/1
@@ -99,10 +79,47 @@
 - KONG_X_SESSION_NAME=oidc_session
 
 
-# Release notes
+## Releases
+- Kong v2.3.0: [Dockerfile](https://github.com/Revomatico/docker-kong-oidc/blob/master/Dockerfile)
+- Kong v2.2.1: [Dockerfile](https://github.com/Revomatico/docker-kong-oidc/blob/2.2.1-3/Dockerfile)
+- Kong v2.1.4: [Dockerfile](https://github.com/Revomatico/docker-kong-oidc/blob/2.1.4-1/Dockerfile)
+- Kong v2.1.0: [Dockerfile](https://github.com/Revomatico/docker-kong-oidc/blob/2.1.0-1/Dockerfile)
+- Kong v2.0.5: [Dockerfile](https://github.com/Revomatico/docker-kong-oidc/blob/2.0.5-4/Dockerfile)
+- Kong v2.0.4: [Dockerfile](https://github.com/Revomatico/docker-kong-oidc/blob/2.0.4-1/Dockerfile)
+- Kong v2.0.3: [Dockerfile](https://github.com/Revomatico/docker-kong-oidc/blob/2.0.3-1/Dockerfile)
+- Kong v2.0.2: [Dockerfile](https://github.com/Revomatico/docker-kong-oidc/blob/2.0.2-1/Dockerfile)
+- Kong v1.5.0: [Dockerfile](https://github.com/Revomatico/docker-kong-oidc/blob/1.5.0-1/Dockerfile)
+- Kong v1.4.2: [Dockerfile](https://github.com/Revomatico/docker-kong-oidc/blob/1.4.2-1/Dockerfile)
+- Kong v1.4.1: [Dockerfile](https://github.com/Revomatico/docker-kong-oidc/blob/1.4.1-1/Dockerfile)
+- Kong v1.4.0: [Dockerfile](https://github.com/Revomatico/docker-kong-oidc/blob/1.4.0-1/Dockerfile)
+- Kong v1.3.0: [Dockerfile](https://github.com/Revomatico/docker-kong-oidc/blob/1.3.0-2/Dockerfile)
+- Kong v1.2.2: [Dockerfile](https://github.com/Revomatico/docker-kong-oidc/blob/1.2.2-1/Dockerfile)
+- Kong v1.1.2: [Dockerfile](https://github.com/Revomatico/docker-kong-oidc/blob/1.1.2-1/Dockerfile)
+- Kong v1.0.3: [Dockerfile](https://github.com/Revomatico/docker-kong-oidc/blob/1.0.3-1/Dockerfile)
+- Kong v0.14: [Dockerfile](https://github.com/Revomatico/docker-kong-oidc/blob/0.14-2/Dockerfile)
+- Kong v0.13: [Dockerfile](https://github.com/Revomatico/docker-kong-oidc/blob/0.13-3/Dockerfile)
+- Kong v0.12:  [Dockerfile](https://github.com/Revomatico/docker-kong-oidc/blob/0.12/Dockerfile)
+
+
+## Release notes
+- 2021-01-16 [2.3.0-1]:
+    - Bumped Kong to 2.3.0
+- 2021-01-16 [2.2.1-3]:
+    - Added `lua_shared_dict` caching for discovery, jwks and introspection. Default cache size is 128k (small).
+    - Bumped kong-oidc version to 1.2.2-2 to implement PR [revomatico#2](https://github.com/revomatico/kong-oidc/pull/2)
+    - Compatibility note: Groups/credentials are now injected regardless of `disable_userinfo_header` param
+    - Compatibility note: Param `disable_userinfo_header` is now honored also for introspection
+    - Compatibility note: OIDC authenticated request now clears possible (anonymous) consumer identity and sets X-Credential-Identifier
+- 2021-01-06 [2.2.1-2]:
+    - Removed `x_proxy_cache_storage_name` in favor of built-in `nginx_http_lua_shared_dict`. See: https://github.com/Kong/kong/issues/4643
+    - Bump `kong-plugin-session` to 2.4.4
+- 2020-12-14 [2.2.1-1]:
+    - Bumped Kong to 2.2.1
+    - Bumped lua-resty-oidc to 1.7.4-1
+    - Bumped kong-plugin-session to 2.4.3
 - 2020-10-27 [2.1.4-1]:
     - Bumped Kong to 2.1.4
-    - Bumped lua-resty-oidc 1.7.3-1
+    - Bumped lua-resty-oidc to 1.7.3-1
 - 2020-07-26 [2.1.0-1]:
     - Bumped Kong to 2.1.0
 - 2020-07-26 [2.0.5-4]:
