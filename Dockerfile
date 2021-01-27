@@ -11,6 +11,9 @@ ENV PACKAGES="openssl-devel kernel-headers gcc git openssh" \
     KONG_PLUGIN_SESSION_VER="2.4.4" \
     NGX_DISTRIBUTED_SHM_VER="1.0.2"
 
+# Nagra customization (keep distinct ENV to avoid conflicts on merge from upstream repo)
+ENV KONG_PLUGIN_REDIRECT_VER="0.1.0-0"
+
 RUN set -ex \
   && apk --no-cache add \
     libssl1.1 \
@@ -29,6 +32,9 @@ RUN set -ex \
  # Remove old lua-resty-session and dependent kong-plugin-session
     && luarocks remove --force kong-plugin-session \
     && luarocks remove --force lua-resty-session \
+ # Build kong-plugin-url-rewrite
+    && curl -sL https://raw.githubusercontent.com/nagra-insight/kong-plugin-redirect/master/kong-plugin-redirect-${KONG_PLUGIN_REDIRECT_VER}.rockspec | tee kong-plugin-redirect-${KONG_PLUGIN_REDIRECT_VER}.rockspec \
+    && luarocks build kong-plugin-redirect-${KONG_PLUGIN_REDIRECT_VER}.rockspec \
  # Build kong-plugin-session
     && curl -sL https://raw.githubusercontent.com/Kong/kong-plugin-session/${KONG_PLUGIN_SESSION_VER}/kong-plugin-session-${KONG_PLUGIN_SESSION_VER}-1.rockspec | tee kong-plugin-session-${KONG_PLUGIN_SESSION_VER}-1.rockspec \
     && luarocks build kong-plugin-session-${KONG_PLUGIN_SESSION_VER}-1.rockspec \
