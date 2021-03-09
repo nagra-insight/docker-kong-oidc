@@ -63,6 +63,7 @@ lua_shared_dict \${{X_SESSION_SHM_STORE}} \${{X_SESSION_SHM_STORE_SIZE}};\n\
     set \$session_storage \${{X_SESSION_STORAGE}};\n\
     set \$session_name \${{X_SESSION_NAME}};\n\
     set \$session_compressor \${{X_SESSION_COMPRESSOR}};\n\
+    set \$session_cookie_lifetime \${{X_SESSION_COOKIE_LIFETIME}};\n\
     ## Session: Memcached specific
     set \$session_memcache_connect_timeout \${{X_SESSION_MEMCACHE_CONNECT_TIMEOUT}};\n\
     set \$session_memcache_send_timeout \${{X_SESSION_MEMCACHE_SEND_TIMEOUT}};\n\
@@ -102,6 +103,7 @@ x_session_storage = cookie\n\
 x_session_name = oidc_session\n\
 x_session_compressor = 'none'\n\
 x_session_secret = ''\n\
+x_session_cookie_lifetime = '604800'\n\
 \n\
 x_session_memcache_prefix = oidc_sessions\n\
 x_session_memcache_connect_timeout = '1000'\n\
