@@ -1,5 +1,5 @@
 IMAGENAME=quay.io/nagra/ni_kong-oidc
-VERSION=2.3.0-ni.1
+VERSION=2.3.2-ni.1
 IMAGE_VERSION=${IMAGENAME}:${VERSION}
 IMAGE_LATEST=${IMAGENAME}:latest
 
