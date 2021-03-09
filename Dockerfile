@@ -1,4 +1,4 @@
-FROM kong:2.3.0-alpine
+FROM kong:2.3.2-alpine
 
 USER root
 
@@ -6,7 +6,7 @@ LABEL authors="Rami Abusereya <rami.abusereya@revomatico.com>,Cristian Chiru <cr
 
 ENV PACKAGES="openssl-devel kernel-headers gcc git openssh" \
     LUA_BASE_DIR="/usr/local/share/lua/5.1" \
-    KONG_OIDC_VER="1.2.2-1" \
+    KONG_OIDC_VER="1.2.3-1" \
     LUA_RESTY_OIDC_VER="1.7.4-1" \
     KONG_PLUGIN_SESSION_VER="2.4.4" \
     NGX_DISTRIBUTED_SHM_VER="1.0.2"
@@ -62,6 +62,7 @@ lua_shared_dict \${{X_SESSION_SHM_STORE}} \${{X_SESSION_SHM_STORE_SIZE}};\n\
     ## Session:
     set \$session_storage \${{X_SESSION_STORAGE}};\n\
     set \$session_name \${{X_SESSION_NAME}};\n\
+    set \$session_compressor \${{X_SESSION_COMPRESSOR}};\n\
     ## Session: Memcached specific
     set \$session_memcache_connect_timeout \${{X_SESSION_MEMCACHE_CONNECT_TIMEOUT}};\n\
     set \$session_memcache_send_timeout \${{X_SESSION_MEMCACHE_SEND_TIMEOUT}};\n\
@@ -99,6 +100,7 @@ lua_shared_dict \${{X_SESSION_SHM_STORE}} \${{X_SESSION_SHM_STORE_SIZE}};\n\
     && sed -i "/\]\]/i\ \n\
 x_session_storage = cookie\n\
 x_session_name = oidc_session\n\
+x_session_compressor = 'none'\n\
 x_session_secret = ''\n\
 \n\
 x_session_memcache_prefix = oidc_sessions\n\
@@ -143,9 +145,5 @@ x_oidc_cache_introspection_size = 128k\n\
     && apk del .build-dependencies 2>/dev/null \
 ## Create kong and working directory (https://github.com/Kong/kong/issues/2690)
     && mkdir -p /usr/local/kong \
-    && chown -R kong:`id -gn kong` /usr/local/kong \
-    # Allow regular users to run these programs and bind to ports < 1024
-    && setcap 'cap_net_bind_service=+ep' /usr/local/bin/kong \
-    && setcap 'cap_net_bind_service=+ep' /usr/local/openresty/nginx/sbin/nginx
-
+    && chown -R kong:`id -gn kong` /usr/local/kong
 USER kong

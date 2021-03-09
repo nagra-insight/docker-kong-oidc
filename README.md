@@ -1,11 +1,13 @@
 # docker-kong-oidc
-> Builds a Docker image from base Kong + nokia/kong-oidc (based on zmartzone/lua-resty-openidc)
+> Builds a [Docker image](https://hub.docker.com/r/revomatico/docker-kong-oidc) from base Kong + [revomatico/kong-oidc](https://github.com/revomatico/kong-oidc) plugin (based on zmartzone/lua-resty-openidc)
 
 
 ## Session: Cookie
 - This is the default, but not recommended. I would recommend **shm** for a single instance, lightweight deployment.
 - If you have too much information in the session (claims, etc), you may need to [increase the nginx header size](https://github.com/bungle/lua-resty-session#cookie-storage-adapter):
     - `KONG_NGINX_LARGE_CLIENT_HEADER_BUFFERS='4 16k'`
+- You can also enable [session compression](https://github.com/bungle/lua-resty-session#pluggable-compressors) to reduce cookie size:
+    - `KONG_X_SESSION_COMPRESSOR=zlib`
 
 
 ## Session: Memcached
@@ -80,7 +82,8 @@
 
 
 ## Releases
-- Kong v2.3.0: [Dockerfile](https://github.com/Revomatico/docker-kong-oidc/blob/master/Dockerfile)
+- Kong v2.3.2: [Dockerfile](https://github.com/Revomatico/docker-kong-oidc/blob/master/Dockerfile)
+- Kong v2.3.0: [Dockerfile](https://github.com/Revomatico/docker-kong-oidc/blob/2.3.0-3/Dockerfile)
 - Kong v2.2.1: [Dockerfile](https://github.com/Revomatico/docker-kong-oidc/blob/2.2.1-3/Dockerfile)
 - Kong v2.1.4: [Dockerfile](https://github.com/Revomatico/docker-kong-oidc/blob/2.1.4-1/Dockerfile)
 - Kong v2.1.0: [Dockerfile](https://github.com/Revomatico/docker-kong-oidc/blob/2.1.0-1/Dockerfile)
@@ -102,6 +105,15 @@
 
 
 ## Release notes
+- 2021-02-25 [2.3.2-2]:
+    - Do not add NET_BIND_SERVICE capability to make it easier to deploy the image in environments with security constraints
+    - Improved test script
+- 2021-02-17 [2.3.2-1]:
+    - Bumped kong to 2.3.2
+- 2021-02-17 [2.3.0-3]:
+    - Bumped kong-oidc version to 1.2.3-1 to implement PR [revomatico#3](https://github.com/revomatico/kong-oidc/pull/3) and [revomatico#4](https://github.com/revomatico/kong-oidc/pull/4)
+- 2021-01-21 [2.3.0-2]:
+    - Added session compression configuration using `KONG_X_SESSION_COMPRESSOR`
 - 2021-01-16 [2.3.0-1]:
     - Bumped Kong to 2.3.0
 - 2021-01-16 [2.2.1-3]:
